@@ -1,6 +1,8 @@
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 
+import 'screen/camera_screen.dart';
+
 late List<CameraDescription> cameras;
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -74,7 +76,12 @@ class _CameraAppState extends State<CameraApp> {
 
                     try {
                       await _controller.setFlashMode((FlashMode.auto));
-                      XFile picture = await _controller.takePicture();
+                      XFile file = await _controller.takePicture();
+
+                      Navigator.push(
+                        context, 
+                        MaterialPageRoute(builder: (context) => ImgPreview(file))
+                      );
                     } on CameraException catch (e) {
                       debugPrint('Error taking picture: $e');
                       return null;
